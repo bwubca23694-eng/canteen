@@ -1,0 +1,273 @@
+/* PaymentPage.css — modern iOS-style responsive design (with color system)
+   Replace or append this entire file to apply the new colors
+*/
+
+/* color system */
+:root{
+  --bg: #ffffff;
+  --surface: #fbfdff;
+  --muted: #6b7280;
+  --text: #0f1724;
+  --glass: rgba(2,6,23,0.04);
+
+  --primary-start: #ff7a3e;   /* warm orange */
+  --primary-end:   #ff4d30;   /* deeper orange */
+  --primary-shadow: rgba(255,77,48,0.12);
+
+  --accent: #4753ff;          /* indigo accent for small controls */
+  --success: #10b981;
+
+  --card-shadow: 0 10px 30px rgba(16,24,40,0.06);
+  --card-border: rgba(2,6,23,0.04);
+
+  --radius-lg: 12px;
+  --radius-md: 10px;
+}
+
+/* page shell */
+.payment-page {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 12px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--text);
+  background: linear-gradient(180deg, #fffefd 0%, #fffdfa 100%);
+}
+
+/* header */
+.payment-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background-color: #c5ed35;
+  gap:12px;
+  margin-bottom:14px;
+  background: var(--surface);
+  padding: 12px 14px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+}
+.brand-left { display:flex; flex-direction:column; gap:4px; }
+.brand-link {
+  cursor:pointer;
+  color: var(--text);
+  font-weight:800;
+  margin:0;
+  font-size:18px;
+  letter-spacing: 0.2px;
+}
+.brand-sub { font-size:13px; color:var(--muted); }
+
+/* table input */
+.table-input label { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; }
+.table-input input {
+  padding:8px 10px;
+  border-radius: 10px;
+  border: 1px solid #e6eef6;
+  min-width: 120px;
+  background: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* top message */
+.payment-msg {
+  max-width: 1100px;
+  margin: 12px auto;
+  padding: 8px 12px;
+  background: #fff7f0;
+  border: 1px solid rgba(255,153,77,0.12);
+  color: #7a2b00;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* layout */
+.payment-main {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 18px;
+}
+
+/* UPI card */
+.upi-card {
+  background: linear-gradient(180deg,var(--surface),#fbfdff);
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+/* QR preview — constrained and centered */
+.upi-qr-wrap {
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border: 1px solid #eef2f7;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+}
+.upi-qr-wrap img { width: 100%; height: 100%; object-fit: contain; display:block; }
+
+/* UPI meta */
+.upi-meta { flex:1; display:flex; flex-direction:column; gap:10px; }
+.upi-line { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.upi-label { font-weight:800; color:var(--text); font-size:15px; }
+.upi-id-pill {
+  background: linear-gradient(90deg,#f3f4f6,#fff);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight:700;
+  border: 1px solid rgba(2,6,23,0.03);
+  color: var(--text);
+}
+
+/* small actions */
+.upi-actions { display:flex; gap:8px; }
+.btn.small {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(2,6,23,0.04);
+  background: white;
+  font-weight:700;
+  cursor:pointer;
+  color: var(--accent);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn.small:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(71,83,255,0.06); }
+
+/* uploader */
+.screenshot-uploader {
+  margin-top: 14px;
+  background: #fffdfe;
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(2,6,23,0.04);
+  box-shadow: 0 8px 20px rgba(16,24,40,0.04);
+}
+.screenshot-uploader .label { font-weight:700; margin-bottom:8px; display:block; color:var(--text); }
+.screenshot-uploader input[type=file] { display:block; margin-top:6px; }
+.screenshot-preview { margin-top:10px; display:flex; gap:12px; align-items:center; }
+.screenshot-preview img { width: 160px; height: 110px; object-fit: cover; border-radius:10px; border:1px solid #eef2f7; }
+.screenshot-actions { display:flex; flex-direction:column; gap:8px; }
+
+/* cart panel */
+.cart-panel {
+  background: linear-gradient(180deg,var(--surface),#4abbef);
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  height: calc(100vh - 160px);
+  position: sticky;
+  top: 84px;
+}
+
+/* cart header */
+.cart-header { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.cart-header h3 { margin:0; font-size:16px; color:var(--text); }
+
+/* cart list */
+.cart-list { list-style:none; margin:0; padding:0; overflow:auto; display:flex; flex-direction:column; gap:8px; }
+.cart-item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px;
+  border-radius:10px;
+  background: #fff;
+  border: 1px solid rgba(2,6,23,0.03);
+}
+.cart-row { display:flex; gap:10px; align-items:center; cursor:pointer; }
+.cart-row input[type="checkbox"] { width:18px; height:18px; accent-color: var(--accent); }
+
+/* cart left */
+.cart-left { display:flex; gap:10px; align-items:center; }
+.thumb { width:56px; height:44px; border-radius:8px; overflow:hidden; background:#fafafa; display:flex; align-items:center; justify-content:center; }
+.thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.thumb-empty { width:100%; height:100%; background: linear-gradient(180deg,#fff7f3,#ffdcae); }
+
+/* item meta */
+.cart-meta { display:flex; flex-direction:column; gap:4px; }
+.item-name { font-weight:700; color:var(--text); font-size:14px; }
+.item-meta { display:flex; gap:8px; align-items:center; color:var(--muted); }
+
+/* summary */
+.cart-summary { margin-top:6px; display:flex; flex-direction:column; gap:8px; }
+.summary-row { display:flex; justify-content:space-between; color:var(--muted); padding:6px 0; }
+.summary-row.total { font-weight:900; color:var(--text); font-size:1.05rem; }
+
+/* actions */
+.actions { margin-top:8px; }
+.btn.full { width:100%; padding:12px 14px; border-radius:10px; font-weight:800; border:0; cursor:pointer; }
+.btn.btn-primary.full {
+  background: linear-gradient(90deg,var(--primary-start),var(--primary-end));
+  color:#fff;
+  box-shadow: 0 10px 28px var(--primary-shadow);
+  transition: transform .12s cubic-bezier(.2,.9,.25,1), box-shadow .12s ease;
+}
+.btn.btn-primary.full:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(255,77,48,0.16); }
+.btn.btn-primary.full:disabled { opacity:0.55; cursor:not-allowed; box-shadow:none; }
+
+/* small helpers */
+.small-muted { font-size:13px; color:var(--muted); }
+.muted { color:var(--muted); }
+
+/* message area */
+.message { margin-top:8px; color:#b91c1c; font-weight:700; }
+
+/* success modal */
+.success-modal {
+  position: fixed;
+  inset: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,0.44);
+  z-index: 9999;
+}
+.success-box {
+  background: white;
+  padding: 22px 28px;
+  border-radius: 12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.checkmark { width:72px; height:72px; stroke: var(--success); stroke-width:3; fill:none; }
+.checkmark-circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 3; animation: stroke 0.6s ease-out forwards; }
+.checkmark-check { stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.4s 0.6s ease-out forwards; }
+@keyframes stroke { to { stroke-dashoffset: 0; } }
+
+/* responsive: collapse to single column on narrower screens */
+@media (max-width: 980px) {
+  .payment-main { grid-template-columns: 1fr; }
+  .cart-panel { position: relative; height: auto; top: 0; }
+  .upi-qr-wrap { width: 220px; height: 220px; margin: 0 auto; }
+  .upi-card { flex-direction: column; align-items: center; }
+  .upi-meta { width: 100%; text-align: center; }
+  .cart-list { max-height: 36vh; }
+  .payment-page { padding: 10px; margin: 10px; }
+}
+
+/* accessibility focus */
+input:focus, .btn:focus, .btn.small:focus, .btn.full:focus {
+  outline: none;
+  box-shadow: 0 8px 28px rgba(71,83,255,0.12);
+  border-radius: 10px;
+}
+
+/* small extra polish for links / interactive text */
+.upi-actions .btn.small { color: var(--accent); border-color: rgba(71,83,255,0.06); }
+.upi-label { color: var(--accent); } 
