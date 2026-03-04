@@ -7,6 +7,7 @@ const OrderSchema = new mongoose.Schema({
   total: { type: Number, default: 0 },
   screenshot: { type: String, default: "" }, // Cloudinary secure_url
   status: { type: String, default: "pending" },
+  whatsapp: { type: String, default: "" },
 }, { timestamps: true });
 
 module.exports = mongoose.model("Order", OrderSchema);

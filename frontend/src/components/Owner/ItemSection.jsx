@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "../../App.css";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 export default function ItemSection() {
   const [items, setItems] = useState([]);

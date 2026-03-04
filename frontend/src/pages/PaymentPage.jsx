@@ -37,6 +37,9 @@ export default function PaymentPage({ tableId: initialTableId }) {
   const [itemsMap, setItemsMap] = useState({});
   const [loadingItems, setLoadingItems] = useState(false);
 
+  // NEW: WhatsApp number state
+  const [whatsapp, setWhatsapp] = useState("");
+
   // initialize checked map (select all by default) whenever cart changes
   useEffect(() => {
     const map = {};
@@ -69,9 +72,7 @@ export default function PaymentPage({ tableId: initialTableId }) {
       }
       return;
     }
-
-    // fallback localStorage already handled by initial state
-  }, [location.key]); // update when location changes
+  }, [location.key]);
 
   // fetch latest items and refresh cart (prices/availability)
   useEffect(() => {
@@ -88,7 +89,6 @@ export default function PaymentPage({ tableId: initialTableId }) {
         items.forEach(it => { if (it._id) map[it._id] = it; });
         setItemsMap(map);
 
-        // merge fresh data
         const merged = cart.map(ci => {
           const fresh = map[ci._id];
           if (fresh) {
@@ -172,11 +172,24 @@ export default function PaymentPage({ tableId: initialTableId }) {
     setScreenshotFile(null);
   }
 
-  const placeDisabled = placing || !screenshotFile || selectedItems.length === 0;
+  // Basic validation for whatsapp number (optional). Accept digits, spaces, + and dashes.
+  function isWhatsappValid(num) {
+    if (!num) return true; // optional
+    const cleaned = String(num).trim();
+    // allow leading +, digits, spaces, dashes; length check after removing non-digits
+    const digits = cleaned.replace(/\D/g, "");
+    if (digits.length < 7 || digits.length > 15) return false;
+    // allow pattern
+    return /^[+\d][\d\s-()+]*$/.test(cleaned);
+  }
+
+  const placeDisabled = placing || !screenshotFile || selectedItems.length === 0 || !isWhatsappValid(whatsapp);
 
   async function placeOrder() {
     if (selectedItems.length === 0) { setMessage("Please select at least one item."); return; }
     if (!screenshotFile) { setMessage("Please upload payment screenshot (required)."); return; }
+    if (!isWhatsappValid(whatsapp)) { setMessage("Please enter a valid WhatsApp number."); setTimeout(() => setMessage(null), 3000); return; }
+
     setMessage(null);
     setPlacing(true);
     try {
@@ -185,6 +198,9 @@ export default function PaymentPage({ tableId: initialTableId }) {
       fd.append("items", JSON.stringify(selectedItems));
       fd.append("total", String(total));
       fd.append("screenshot", screenshotFile);
+
+      // NEW: append whatsapp number (optional)
+      fd.append("whatsapp", whatsapp ? String(whatsapp).trim() : "");
 
       const res = await fetch(`${API}/api/orders`, { method: "POST", body: fd });
       if (!res.ok) {
@@ -200,6 +216,7 @@ export default function PaymentPage({ tableId: initialTableId }) {
 
       setSuccessModal(true);
       removeScreenshot();
+      setWhatsapp(""); // clear whatsapp after success
 
       setTimeout(() => {
         setSuccessModal(false);
@@ -261,7 +278,22 @@ export default function PaymentPage({ tableId: initialTableId }) {
             </div>
           </div>
 
-          <div className="screenshot-uploader">
+          {/* NEW: WhatsApp input section */}
+          <div className="whatsapp-input" style={{ marginTop: 16 }}>
+            <label className="label">WhatsApp number (optional)</label>
+            <input
+              type="tel"
+              placeholder="+91 98765 43210"
+              value={whatsapp}
+              onChange={e => setWhatsapp(e.target.value)}
+              maxLength={24}
+            />
+            <div className="small-muted" style={{ marginTop: 8 }}>
+              We will use this number to contact you about your order (optional).
+            </div>
+          </div>
+
+          <div className="screenshot-uploader" style={{ marginTop: 16 }}>
             <label className="label">Upload payment screenshot</label>
             <input type="file" accept="image/*" onChange={handleFileChange} />
             {screenshotPreview && (
@@ -320,7 +352,7 @@ export default function PaymentPage({ tableId: initialTableId }) {
                 className="btn btn-primary full"
                 onClick={placeOrder}
                 disabled={placeDisabled}
-                title={placeDisabled ? "Upload payment screenshot to enable" : "Place order"}
+                title={placeDisabled ? "Upload payment screenshot to enable or fix WhatsApp number" : "Place order"}
               >
                 {placing ? "Placing…" : "Place order"}
               </button>

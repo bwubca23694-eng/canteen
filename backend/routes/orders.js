@@ -46,7 +46,7 @@ router.get("/", async (req, res) => {
 // Create new order. fields expected: tableId, items (JSON string), total, screenshot (file)
 router.post("/", upload.single("screenshot"), async (req, res) => {
   try {
-    const { tableId = "", items = "[]", total = 0 } = req.body;
+    const { tableId = "", items = "[]", total = 0, whatsapp = "" } = req.body;
     let screenshotUrl = "";
 
     if (req.file && req.file.buffer) {
@@ -64,6 +64,7 @@ router.post("/", upload.single("screenshot"), async (req, res) => {
       total: Number(total || 0),
       screenshot: screenshotUrl,
       status: "pending",
+      whatsapp: String(whatsapp || ""),
     });
 
     await order.save();
